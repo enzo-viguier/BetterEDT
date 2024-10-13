@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -48,22 +47,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               controller: _icalLinkController,
               decoration: InputDecoration(
                 hintText: 'Lien iCal',
+                border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 20),
-            Text('Ou téléchargez un fichier iCal :', style: TextStyle(fontSize: 16)),
-            ElevatedButton(
-              onPressed: _pickIcalFile,
-              child: Text('Choisir un fichier iCal'),
-            ),
-            if (_icalFilePath != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: Text(
-                  'Fichier sélectionné : $_icalFilePath',
-                  style: TextStyle(color: Colors.green),
-                ),
-              ),
             SizedBox(height: 40),
             Center(
               child: ElevatedButton(
@@ -71,24 +57,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: Text('Sauvegarder'),
               ),
             ),
+            SizedBox(height: 20),
+            Center(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(foregroundColor: Colors.red),
+                onPressed: () => _icalLinkController.clear(),
+                child: Text('Effacer'),
+              ),
+            )
           ],
         ),
       ),
     );
-  }
-
-  // Méthode pour sélectionner un fichier iCal
-  Future<void> _pickIcalFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['ics'],
-    );
-
-    if (result != null) {
-      setState(() {
-        _icalFilePath = result.files.single.path!;
-      });
-    }
   }
 
   // Méthode pour sauvegarder les paramètres (fichier ou lien)
