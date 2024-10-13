@@ -57,11 +57,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
   // Convertir les événements iCal en objets Appointment
   List<Appointment> _convertEventsToAppointments(List<Map<String, dynamic>> events) {
     return events.map((event) {
-      print("Date début : " + DateTime.parse(event['start']).toString());
-      print("Date fin : " + DateTime.parse(event['end']).toString());
       return Appointment(
         startTime: DateTime.parse(event['start'] ?? DateTime.now().toString()),
-        endTime: DateTime.parse(event['end'] ?? DateTime.now().add(Duration(hours: 1)).toString()),
+        endTime: DateTime.parse(event['end'] ?? DateTime.now().toString()),
         subject: event['summary'] ?? 'Sans titre',
         location: event['location'] ?? 'Aucun lieu',
         notes: event['description'] ?? '',
@@ -73,7 +71,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Emploi du Temps'),
+        title: const Text('Emploi du Temps'),
         actions: [
           // Bouton pour basculer entre la vue "jour" et "semaine"
           IconButton(
@@ -81,7 +79,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             onPressed: () {
               setState(() {
                 if (_calendarController.view == CalendarView.day) {
-                  _calendarController.view = CalendarView.week;
+                  _calendarController.view = CalendarView.workWeek;
                 } else {
                   _calendarController.view = CalendarView.day;
                 }
@@ -105,8 +103,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
       body: SfCalendar(
         controller: _calendarController,  // On associe le CalendarController
         firstDayOfWeek: 1,
-        timeSlotViewSettings: TimeSlotViewSettings(
+        timeSlotViewSettings: const TimeSlotViewSettings(
           timeFormat: 'HH:mm',  // Format 24 heures
+          startHour: 5, // Commence à 7h00 //TODO Modifier l'heure de début
+          endHour: 21,  // Termine à 21h00
         ),
         appointmentTimeTextFormat: 'HH:mm',
         view: CalendarView.day,  // Vue par défaut
@@ -117,12 +117,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
         appointmentBuilder: (BuildContext context, CalendarAppointmentDetails details) {
           final Appointment appointment = details.appointments.first;
           return Container(
-            padding: EdgeInsets.all(4),
+            padding: const EdgeInsets.all(4),
             color: appointment.color,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(appointment.subject, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                Text(appointment.subject, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                 // Si l'emploi du temps est en vision semaine, appointement.location n'est pas affiché
                 if (_calendarController.view == CalendarView.day)
                 Text(appointment.location ?? '', style: TextStyle(color: Colors.white70)),
@@ -143,7 +143,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text("Salle: ${tappedAppointment.location ?? 'Non spécifié'}"),
-                      Text("${tappedAppointment.notes ?? 'Non spécifié'}"),
+                      Text(tappedAppointment.notes ?? 'Non spécifié'),
                     ],
                   ),
                   actions: [
@@ -151,7 +151,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text('Fermer'),
+                      child: const Text('Fermer'),
                     ),
                   ],
                 );
