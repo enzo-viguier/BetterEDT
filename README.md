@@ -1,4 +1,4 @@
-# better_edt
+# Better EDT
 
 BetterEDT allows you to view your schedule more easily and quickly than the ENT platform
 

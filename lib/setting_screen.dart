@@ -77,11 +77,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (icalLink.isNotEmpty) {
       _saveIcalLink(icalLink);  // Sauvegarder le lien iCal
       print('Lien iCal sauvegardé : $icalLink');
-    } else if (_icalFilePath != null) {
-      print('Fichier iCal sauvegardé : $_icalFilePath');
     } else {
-      print('Aucune donnée fournie');
+      print('Fichier iCal sauvegardé : $_icalFilePath');
     }
+
     // Revenir à l'écran précédent
     Navigator.pop(context);
   }

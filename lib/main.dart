@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'setting_screen.dart';
 import 'data_service.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(BetterEDT());
@@ -31,7 +30,6 @@ class CalendarScreen extends StatefulWidget {
 class _CalendarScreenState extends State<CalendarScreen> {
   late CalendarController _calendarController;
   List<Appointment> _appointments = [];
-  String? _icalLink;
   DataService dataService = DataService();
 
   @override
@@ -57,12 +55,23 @@ class _CalendarScreenState extends State<CalendarScreen> {
   // Convertir les événements iCal en objets Appointment
   List<Appointment> _convertEventsToAppointments(List<Map<String, dynamic>> events) {
     return events.map((event) {
+      final DateTime? startUtc = event['start']; // DateTime en UTC
+      final DateTime? endUtc = event['end'];     // DateTime en UTC
+
+      final DateTime? startLocal = startUtc?.toLocal();  // Conversion en local
+      final DateTime? endLocal = endUtc?.toLocal();      // Conversion en local
+
+      final String? subject = event['summary'] ?? 'Sans titre';
+      final String? location = event['location'] ?? 'Pas de lieu';
+      final String? description = event['description'] ?? 'Pas de description';
+
       return Appointment(
-        startTime: DateTime.parse(event['start'] ?? DateTime.now().toString()),
-        endTime: DateTime.parse(event['end'] ?? DateTime.now().toString()),
-        subject: event['summary'] ?? 'Sans titre',
-        location: event['location'] ?? 'Aucun lieu',
-        notes: event['description'] ?? '',
+        startTime: startLocal ?? DateTime.now(),
+        endTime: endLocal ?? DateTime.now().add(Duration(hours: 1)),
+        subject: subject ?? 'Sans titre',
+        location: location,
+        notes: description, // Utilise notes pour afficher la description
+        color: Colors.blue, // Peut être personnalisé
       );
     }).toList();
   }
@@ -105,8 +114,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
         firstDayOfWeek: 1,
         timeSlotViewSettings: const TimeSlotViewSettings(
           timeFormat: 'HH:mm',  // Format 24 heures
-          startHour: 5, // Commence à 7h00 //TODO Modifier l'heure de début
-          endHour: 21,  // Termine à 21h00
+          startHour: 7, // Commence à 7h00
+          endHour: 22,  // Termine à 21h00
         ),
         appointmentTimeTextFormat: 'HH:mm',
         view: CalendarView.day,  // Vue par défaut
@@ -125,7 +134,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 Text(appointment.subject, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                 // Si l'emploi du temps est en vision semaine, appointement.location n'est pas affiché
                 if (_calendarController.view == CalendarView.day)
-                Text(appointment.location ?? '', style: TextStyle(color: Colors.white70)),
+                Text(appointment.location ?? '', style: const TextStyle(color: Colors.white70)),
               ],
             ),
           );

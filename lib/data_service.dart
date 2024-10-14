@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
@@ -49,6 +47,18 @@ class DataService {
     }
   }
 
+  String icalToDateTimeString(String icalDate) {
+    // Convertir le format iCalendar en un format compatible avec DateTime.parse()
+    // Exemple : 20241107T084500Z -> 2024-11-07T08:45:00Z
+    return icalDate.substring(0, 4) + '-' +
+        icalDate.substring(4, 6) + '-' +
+        icalDate.substring(6, 8) + 'T' +
+        icalDate.substring(9, 11) + ':' +
+        icalDate.substring(11, 13) + ':' +
+        icalDate.substring(13, 15) + 'Z';
+  }
+
+
   Future<List<Map<String, dynamic>>> parseIcalFile() async {
     try {
       final directory = await getApplicationDocumentsDirectory();
@@ -74,9 +84,21 @@ class DataService {
           }
         }
 
+        // Convertir les dates iCal en DateTime
+        final String? dtstart = event['dtstart']?.dt;
+        final String? dtend = event['dtend']?.dt;
+
+        DateTime? startDate;
+        DateTime? endDate;
+
+        if (dtstart != null && dtend != null) {
+          startDate = DateTime.parse(icalToDateTimeString(dtstart));
+          endDate = DateTime.parse(icalToDateTimeString(dtend));
+        }
+
         return {
-          'start': event['dtstart']?.dt,
-          'end': event['dtend']?.dt,
+          'start': startDate,
+          'end': endDate,
           'summary': event['summary'],
           'location': event['location'],
           'description': event['description'],
