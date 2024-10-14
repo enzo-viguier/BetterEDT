@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'tutorial.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -13,7 +14,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();
-    _loadIcalLink();  // Charger le lien iCal sauvegardé au démarrage
+    _loadIcalLink(); // Charger le lien iCal sauvegardé au démarrage
   }
 
   // Charger le lien iCal sauvegardé à partir de SharedPreferences
@@ -21,14 +22,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String savedIcalLink = prefs.getString('ical_link') ?? '';
     setState(() {
-      _icalLinkController.text = savedIcalLink;  // Remplir le champ texte avec le lien sauvegardé
+      _icalLinkController.text =
+          savedIcalLink; // Remplir le champ texte avec le lien sauvegardé
     });
   }
 
   // Méthode pour sauvegarder le lien iCal dans SharedPreferences
   void _saveIcalLink(String icalLink) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('ical_link', icalLink);  // Sauvegarder le lien iCal
+    prefs.setString('ical_link', icalLink); // Sauvegarder le lien iCal
   }
 
   @override
@@ -64,7 +66,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 onPressed: () => _icalLinkController.clear(),
                 child: Text('Effacer'),
               ),
-            )
+            ),
+            SizedBox(height: 40),
+            Center(
+                child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          TutorialScreen()), // Naviguer vers le tutoriel
+                );
+              },
+              child: Text(
+                'Comment obtenir le lien iCal ?',
+                style: TextStyle(
+                  color: Colors.blue,
+                  decoration: TextDecoration.underline,
+                  fontSize: 16,
+                ),
+              ),
+            ))
           ],
         ),
       ),
@@ -75,7 +97,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void _saveSettings() {
     String icalLink = _icalLinkController.text;
     if (icalLink.isNotEmpty) {
-      _saveIcalLink(icalLink);  // Sauvegarder le lien iCal
+      _saveIcalLink(icalLink); // Sauvegarder le lien iCal
       print('Lien iCal sauvegardé : $icalLink');
     } else {
       print('Fichier iCal sauvegardé : $_icalFilePath');

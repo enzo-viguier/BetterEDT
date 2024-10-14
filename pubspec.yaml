@@ -73,6 +73,12 @@ flutter:
 
   assets:
     - lib/assets/icon/icon.png
+    - lib/assets/images/ent_menu.png
+    - lib/assets/images/iCal_page.png
+    - lib/assets/images/planning_menu.png
+    - lib/assets/images/setting_page.png
+    - lib/assets/images/happy.png
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:
