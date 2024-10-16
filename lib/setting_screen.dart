@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'tutorial.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -12,6 +13,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   TextEditingController _icalLinkController = TextEditingController();
   String _icalFilePath = "";
   String _version = '';
+
+  var logger = Logger();
 
   @override
   void initState() {
@@ -119,9 +122,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     String icalLink = _icalLinkController.text;
     if (icalLink.isNotEmpty) {
       _saveIcalLink(icalLink); // Sauvegarder le lien iCal
-      print('Lien iCal sauvegardé : $icalLink');
+      logger.i('Lien iCal sauvegardé : $icalLink');
+
     } else {
-      print('Fichier iCal sauvegardé : $_icalFilePath');
+      logger.i('Fichier iCal sauvegardé : $_icalFilePath');
     }
 
     // Revenir à l'écran précédent

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'setting_screen.dart';
 import 'data_service.dart';
@@ -32,6 +33,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
   List<Appointment> _appointments = [];
   DataService dataService = DataService();
 
+  var logger = Logger();
+
   @override
   void initState() {
     super.initState();
@@ -48,7 +51,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       _appointments = _convertEventsToAppointments(events);  // Convertir en objets Appointment
       setState(() {});  // Mettre à jour l'affichage
     } else {
-      print('Erreur lors du téléchargement du fichier iCal');
+      logger.e('Erreur lors du téléchargement du fichier iCal');
     }
   }
 
