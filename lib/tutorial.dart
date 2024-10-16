@@ -5,7 +5,7 @@ class TutorialScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Comment obtenir le lien iCal'),
+        title: Text('Obtenir le lien iCal'),
       ),
       body: SingleChildScrollView(  // Permet le défilement si le contenu est long
         child: Padding(

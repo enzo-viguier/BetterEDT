@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'tutorial.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -10,11 +11,20 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   TextEditingController _icalLinkController = TextEditingController();
   String _icalFilePath = "";
+  String _version = '';
 
   @override
   void initState() {
     super.initState();
     _loadIcalLink(); // Charger le lien iCal sauvegardé au démarrage
+    _getVersion(); // Récupérer la version de l'application
+  }
+
+  Future<void> _getVersion() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      _version = packageInfo.version;  // Récupérer le numéro de version
+    });
   }
 
   // Charger le lien iCal sauvegardé à partir de SharedPreferences
@@ -70,23 +80,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SizedBox(height: 40),
             Center(
                 child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          TutorialScreen()), // Naviguer vers le tutoriel
-                );
-              },
+                  onTap: () {
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TutorialScreen()),
+                    );
+                  },
+                child: Text(
+                  'Comment obtenir le lien iCal ?',
+                    style: TextStyle(
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline,
+                        fontSize: 16,
+                    ),
+                  ),
+                )
+            ),
+            // Ajout du numéro de version
+            Spacer(), // Pour pousser le numéro de version en bas de l'écran
+            Center(
               child: Text(
-                'Comment obtenir le lien iCal ?',
+                "Version $_version by Enzo VIGUIER", // Remplace par ta version actuelle
                 style: TextStyle(
-                  color: Colors.blue,
-                  decoration: TextDecoration.underline,
-                  fontSize: 16,
+                  fontSize: 12, // Taille du texte
+                  color: Colors.grey, // Couleur légèrement grise
                 ),
               ),
-            ))
+            ),
+            SizedBox(height: 8), // Pour un petit espacement
           ],
         ),
       ),
