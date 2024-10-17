@@ -1,18 +1,51 @@
-# Better EDT
+# BetterEDT
 
-BetterEDT allows you to view your schedule more easily and quickly than the ENT platform
+## Introduction
 
-## Getting Started
+L'application BetterEDT est une application permettant de visualiser son emploi du temps de manière plus ergonomique et plus intuitive que l'application officielle de l'Université de Montpellier.
 
-This project is a starting point for a Flutter application.
+## Contributeur
 
-A few resources to get you started if this is your first Flutter project:
+- [Enzo VIGUIER](https://github.com/enzo-viguier)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Installation
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Android
 
-test
+1. Télécharger l'APK sur le site de BetterEDT
+2. Installer l'APK sur votre téléphone
+
+### iOS
+
+[//]: # (1. Télécharger le code source de BetterEDT)
+
+[//]: # (2. Ouvrir le projet avec Xcode)
+
+[//]: # (3. Compiler le projet avec Xcode)
+
+[//]: # (4. Installer l'application sur votre téléphone)
+
+**SOON**
+
+## Utilisation
+
+1. Se connecter à son ENT
+2. Accéder à la section "Planning 20XX-20XX"
+3. Récupérer le lien iCal de son emploi du temps
+4. Ouvrir l'application BetterEDT
+5. Accéder à la section "Paramètres"
+6. Coller le lien iCal dans le champ "Lien iCal"
+7. Appuyer sur le bouton "Sauvegarder"
+8. Enjoy !
+
+## Technologies
+
+- Flutter
+- Dart
+- Git
+- Android Studio
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+

@@ -106,7 +106,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 context,
                 MaterialPageRoute(builder: (context) => SettingsScreen()),
               ).then((_) {
-                // Recharger les événements lorsque l'utilisateur revient de la page des paramètres
+                _downloadIcalAndUpdate();
               });
             },
           ),

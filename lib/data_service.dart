@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,6 +7,8 @@ import 'package:icalendar_parser/icalendar_parser.dart';
 
 
 class DataService {
+
+  var logger = Logger();
 
   // Méthode pour récupérer le lien iCal depuis SharedPreferences
   Future<String?> _getIcalLink() async {
@@ -18,7 +21,7 @@ class DataService {
     String? icalLink = await _getIcalLink();
 
     if (icalLink == null || icalLink.isEmpty) {
-      print('Lien iCal non trouvé.');
+      logger.i('Lien iCal non trouvé.');
       return null;
     }
 
@@ -27,22 +30,51 @@ class DataService {
       final response = await http.get(Uri.parse(icalLink));
 
       if (response.statusCode == 200) {
-        // Obtenir le chemin vers le répertoire local
-        final directory = await getApplicationDocumentsDirectory();
-        final filePath = '${directory.path}/calendar.ics';
+        // Vérification si le contenu du fichier ressemble à un fichier iCal
+        String responseBody = response.body;
+        if (responseBody.contains("BEGIN:VCALENDAR")) {
+          // Obtenir le chemin vers le répertoire local
+          final directory = await getApplicationDocumentsDirectory();
+          final filePath = '${directory.path}/calendar.ics';
 
-        // Sauvegarder les données dans un fichier local
-        final file = File(filePath);
-        await file.writeAsBytes(response.bodyBytes);
+          // Sauvegarder les données dans un fichier local
+          final file = File(filePath);
+          await file.writeAsBytes(response.bodyBytes);
 
-        print('Fichier iCal téléchargé et sauvegardé à $filePath');
+          logger.i('Fichier iCal téléchargé et sauvegardé à $filePath');
+          return file;
+        } else {
+          logger.w('Le fichier récupéré n\'est pas un fichier iCal valide.');
+          return _getLocalIcalFile();  // Utiliser le fichier local en cas de mauvais format
+        }
+      }
+      else {
+        logger.w('Erreur lors de la récupération du fichier iCal : ${response.statusCode}');
+        return _getLocalIcalFile();
+      }
+    } catch (e) {
+      logger.w('Erreur lors de la récupération du fichier iCal : $e');
+      return _getLocalIcalFile();
+    }
+
+  }
+
+  // Méthode pour récupérer le fichier iCal déjà téléchargé localement
+  Future<File?> _getLocalIcalFile() async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final filePath = '${directory.path}/calendar.ics';
+      final file = File(filePath);
+
+      if (await file.exists()) {
+        logger.i('Utilisation du fichier iCal local.');
         return file;
       } else {
-        print('Erreur lors de la récupération du fichier iCal : ${response.statusCode}');
+        logger.w('Aucun fichier iCal local trouvé.');
         return null;
       }
     } catch (e) {
-      print('Erreur : $e');
+      logger.w('Erreur lors de la récupération du fichier iCal local : $e');
       return null;
     }
   }
@@ -105,9 +137,8 @@ class DataService {
         };
       }).toList();
     } catch (e) {
-      // print('Erreur lors du parsing du fichier iCal : $e');
       if (e is ICalendarFormatException && e == "The first line must be BEGIN:VCALENDAR but was <!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">.") {
-        print("Erreur : Le service EDT n'est pas accessible ou est en maintenance.");
+        logger.e("Erreur : Le service EDT n'est pas accessible ou est en maintenance.");
       }
       return [];
     }
