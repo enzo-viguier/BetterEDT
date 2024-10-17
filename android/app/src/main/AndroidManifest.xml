@@ -3,7 +3,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:label="better_edt"
+        android:label="BetterEDT"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
