@@ -58,6 +58,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       );
 
     }
+
   }
 
   // Convertir les événements iCal en objets Appointment
