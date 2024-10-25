@@ -45,7 +45,3 @@ L'application BetterEDT est une application permettant de visualiser son emploi 
 - Git
 - Android Studio
 
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
-
