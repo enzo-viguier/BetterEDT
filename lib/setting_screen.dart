@@ -117,18 +117,36 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  // Méthode pour sauvegarder les paramètres (fichier ou lien)
+  // Méthode pour sauvegarder les paramètres (lien)
   void _saveSettings() {
-    String icalLink = _icalLinkController.text;
+
+    String icalLink = _icalLinkController.text; // Récupérer le lien iCal
+
     if (icalLink.isNotEmpty) {
-      _saveIcalLink(icalLink); // Sauvegarder le lien iCal
-      logger.i('Lien iCal sauvegardé : $icalLink');
+
+      if (icalLink.startsWith('https://proseconsult.umontpellier.fr')) {
+
+        _saveIcalLink(icalLink);  // Sauvegarder le lien si valide
+        logger.i('Lien iCal sauvegardé : $icalLink');
+
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Lien iCal sauvegardé avec succès.'))
+        );
+
+        // Revenir à l'écran précédent
+        Navigator.pop(context);
+
+      } else {
+
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Veuillez entrer un lien iCal valide.'))
+        );
+
+      }
 
     } else {
       logger.i('Fichier iCal sauvegardé : $_icalFilePath');
     }
 
-    // Revenir à l'écran précédent
-    Navigator.pop(context);
   }
 }

@@ -52,7 +52,11 @@ class DataService {
         logger.w('Erreur lors de la récupération du fichier iCal : ${response.statusCode}');
         return _getLocalIcalFile();
       }
-    } catch (e) {
+    } on SocketException catch (exception) {
+      logger.e('Erreur réseau : $exception');
+      return _getLocalIcalFile();
+    }
+    catch (e) {
       logger.w('Erreur lors de la récupération du fichier iCal : $e');
       return _getLocalIcalFile();
     }

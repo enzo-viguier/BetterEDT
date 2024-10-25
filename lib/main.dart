@@ -22,7 +22,6 @@ class BetterEDT extends StatelessWidget {
   }
 }
 
-//
 class CalendarScreen extends StatefulWidget {
   @override
   _CalendarScreenState createState() => _CalendarScreenState();
@@ -51,7 +50,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
       _appointments = _convertEventsToAppointments(events);  // Convertir en objets Appointment
       setState(() {});  // Mettre à jour l'affichage
     } else {
+
       logger.e('Erreur lors du téléchargement du fichier iCal');
+
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur lors du téléchargement du fichier iCal.'))
+      );
+
     }
   }
 
