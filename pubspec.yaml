@@ -27,6 +27,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  syncfusion_localizations: ^27.1.56
+  flutter_localization: ^0.2.2
   syncfusion_flutter_calendar: ^27.1.52
   shared_preferences: ^2.1.0
   icalendar_parser: ^2.1.0
@@ -78,6 +80,8 @@ flutter:
     - lib/assets/images/planning_menu.png
     - lib/assets/images/setting_page.png
     - lib/assets/images/happy.png
+    - l10n/app_fr.json
+    - l10n/app_en.json
 
 
   # To add assets to your application, add an assets section, like this:
