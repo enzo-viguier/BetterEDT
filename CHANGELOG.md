@@ -2,6 +2,13 @@
 
 Toutes les modifications notables apportées à ce projet seront documentées dans ce fichier.
 
+## [1.1.0] - 2024-10-26
+### Ajout :
+- Ajout de la traduction de l'application selon le langage du système. Langages supporté : French(**FR**), English(**EN**)
+- Ajout de la traduction du planning selon le langage système du téléphone (traduction indépendant de la traduction de l'application).
+- Ajout de messages d'informations ou d'erreur lors de certains événements (ajout, modification d'un lien iCal, chargement réussi ou échoué du iCal récupéré)
+
+[Voir les modifications complètes entre v1.0.0 et v1.1.0](https://github.com/enzo-viguier/BetterEDT/compare/v1.0.0...v1.1.0)
 
 ## [1.0.0] - 2024-10-17
 ### Ajouté
