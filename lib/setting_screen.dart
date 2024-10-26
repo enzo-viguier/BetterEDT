@@ -3,8 +3,11 @@ import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'tutorial.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'l10n.dart';
 
 class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({super.key});
+
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
 }
@@ -50,48 +53,48 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Paramètres'),
+        title: Text(AppLocalizations.of(context)!.translate('AppBarSettingScreen')),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Entrez le lien iCal :', style: TextStyle(fontSize: 16)),
+            Text(AppLocalizations.of(context)!.translate("InsertLink"), style: TextStyle(fontSize: 16)),
             TextField(
               controller: _icalLinkController,
               decoration: InputDecoration(
-                hintText: 'Lien iCal',
+                hintText: AppLocalizations.of(context)!.translate("LienIcal"),
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             Center(
               child: ElevatedButton(
                 onPressed: _saveSettings,
-                child: Text('Sauvegarder'),
+                child: Text(AppLocalizations.of(context)!.translate("Save")),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(foregroundColor: Colors.red),
                 onPressed: () => _icalLinkController.clear(),
-                child: Text('Effacer'),
+                child: Text(AppLocalizations.of(context)!.translate("Delete")),
               ),
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             Center(
                 child: GestureDetector(
                   onTap: () {
                     Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => TutorialScreen()),
+                    MaterialPageRoute(builder: (context) => const TutorialScreen()),
                     );
                   },
                 child: Text(
-                  'Comment obtenir le lien iCal ?',
-                    style: TextStyle(
+                  AppLocalizations.of(context)!.translate("HowToGetICalLink"),
+                    style: const TextStyle(
                         color: Colors.blue,
                         decoration: TextDecoration.underline,
                         fontSize: 16,
@@ -100,17 +103,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 )
             ),
             // Ajout du numéro de version
-            Spacer(), // Pour pousser le numéro de version en bas de l'écran
+            const Spacer(), // Pour pousser le numéro de version en bas de l'écran
             Center(
               child: Text(
                 "Version $_version by Enzo VIGUIER", // Remplace par ta version actuelle
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 12, // Taille du texte
                   color: Colors.grey, // Couleur légèrement grise
                 ),
               ),
             ),
-            SizedBox(height: 8), // Pour un petit espacement
+            const SizedBox(height: 8), // Pour un petit espacement
           ],
         ),
       ),
@@ -130,7 +133,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         logger.i('Lien iCal sauvegardé : $icalLink');
 
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Lien iCal sauvegardé avec succès.'))
+            SnackBar(content: Text(AppLocalizations.of(context)!.translate('iCalLinkSavedWithSuccess')))
         );
 
         // Revenir à l'écran précédent
@@ -139,7 +142,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       } else {
 
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Veuillez entrer un lien iCal valide.'))
+            SnackBar(content: Text(AppLocalizations.of(context)!.translate('InsertICalLink')))
         );
 
       }

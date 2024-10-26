@@ -86,12 +86,7 @@ class DataService {
   String icalToDateTimeString(String icalDate) {
     // Convertir le format iCalendar en un format compatible avec DateTime.parse()
     // Exemple : 20241107T084500Z -> 2024-11-07T08:45:00Z
-    return icalDate.substring(0, 4) + '-' +
-        icalDate.substring(4, 6) + '-' +
-        icalDate.substring(6, 8) + 'T' +
-        icalDate.substring(9, 11) + ':' +
-        icalDate.substring(11, 13) + ':' +
-        icalDate.substring(13, 15) + 'Z';
+    return '${icalDate.substring(0, 4)}-${icalDate.substring(4, 6)}-${icalDate.substring(6, 8)}T${icalDate.substring(9, 11)}:${icalDate.substring(11, 13)}:${icalDate.substring(13, 15)}Z';
   }
 
 

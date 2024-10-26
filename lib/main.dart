@@ -1,28 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:syncfusion_localizations/syncfusion_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'setting_screen.dart';
 import 'data_service.dart';
+import 'l10n.dart';
 
 void main() {
-  runApp(BetterEDT());
+  runApp(const BetterEDT());
 }
 
 class BetterEDT extends StatelessWidget {
+  const BetterEDT({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        SfGlobalLocalizations.delegate
+      ],
+      supportedLocales: const [
+        Locale('en'),
+        Locale('fr'),
+      ],
       debugShowCheckedModeBanner: false,
       title: 'BetterEDT',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: CalendarScreen(),
+      home: const CalendarScreen(),
     );
   }
 }
 
 class CalendarScreen extends StatefulWidget {
+  const CalendarScreen({super.key});
+
   @override
   _CalendarScreenState createState() => _CalendarScreenState();
 }
@@ -54,7 +72,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       logger.e('Erreur lors du téléchargement du fichier iCal');
 
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erreur lors du téléchargement du fichier iCal.'))
+          SnackBar(content: Text(AppLocalizations.of(context)!.translate('ErrorDownloadICalFile')))
       );
 
     }
@@ -70,14 +88,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
       final DateTime? startLocal = startUtc?.toLocal();  // Conversion en local
       final DateTime? endLocal = endUtc?.toLocal();      // Conversion en local
 
-      final String? subject = event['summary'] ?? 'Sans titre';
-      final String? location = event['location'] ?? 'Pas de lieu';
-      final String? description = event['description'] ?? 'Pas de description';
+      final String? subject = event['summary'] ?? AppLocalizations.of(context)!.translate("Untitled");
+      final String? location = event['location'] ?? AppLocalizations.of(context)!.translate("NoPlace");
+      final String? description = event['description'] ?? AppLocalizations.of(context)!.translate("NoDescription");
 
       return Appointment(
         startTime: startLocal ?? DateTime.now(),
-        endTime: endLocal ?? DateTime.now().add(Duration(hours: 1)),
-        subject: subject ?? 'Sans titre',
+        endTime: endLocal ?? DateTime.now().add(const Duration(hours: 1)),
+        subject: subject ?? AppLocalizations.of(context)!.translate("Untitled"),
         location: location,
         notes: description, // Utilise notes pour afficher la description
         color: Colors.blue, // Peut être personnalisé
@@ -89,7 +107,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Emploi du Temps'),
+        title: Text(AppLocalizations.of(context)!.translate('AppBarHomePage')),
         actions: [
           // Bouton pour basculer entre la vue "jour" et "semaine"
           IconButton(
@@ -110,7 +128,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               // Navigation vers la page Paramètres
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SettingsScreen()),
+                MaterialPageRoute(builder: (context) => const SettingsScreen()),
               ).then((_) {
                 _downloadIcalAndUpdate();
               });
@@ -160,8 +178,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text("Salle: ${tappedAppointment.location ?? 'Non spécifié'}"),
-                      Text(tappedAppointment.notes ?? 'Non spécifié'),
+                      Text("${AppLocalizations.of(context)!.translate('Room')}: ${tappedAppointment.location ?? AppLocalizations.of(context)!.translate('NotSpecified')}"),
+                      Text(tappedAppointment.notes ?? AppLocalizations.of(context)!.translate('NotSpecified')),
                     ],
                   ),
                   actions: [
@@ -169,7 +187,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: const Text('Fermer'),
+                      child: Text(AppLocalizations.of(context)!.translate('Close')),
                     ),
                   ],
                 );
